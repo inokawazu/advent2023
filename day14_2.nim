@@ -56,5 +56,11 @@ func solve(input_rmap: RockMap): int =
       for inner_rmap, j in rm_dict.pairs:
         if j == ind_f: return north_load(inner_rmap)
 
-let answer = solve(rows)
-echo "The answer is ", answer
+for r in rows: echo r
+echo ""
+for r in rows.transpose: echo r
+#echo ""
+#for r in rows.spin_platform.spin_platform: echo r
+
+#let answer = solve(rows)
+#echo "The answer is ", answer
