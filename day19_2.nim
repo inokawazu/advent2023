@@ -1,8 +1,6 @@
 # Broken 
 import system
 import std/strutils
-import std/sequtils
-import std/math
 import std/tables
 import std/deques
 
@@ -60,7 +58,7 @@ func parse_workflows(s: string): WorkFlowTable =
           target = entry
           workflowrule: WorkFlowRule = (cmp, cmp_field, cmp_value, target)
         workflow.add(workflowrule)
-      else: assert(false, "Unreachable")
+      else: assert false, "Unreachable"
     result[name] = workflow
 
 func parse_parts(s: string): seq[Part] =
@@ -78,27 +76,6 @@ func process_input(s: string): (WorkFlowTable, seq[Part]) =
   let s_parts = s.strip.split("\n\n")
   assert s_parts.len == 2
   return (parse_workflows(s_parts[0]), parse_parts(s_parts[1]))
-
-proc process(wft: WorkFlowTable, part: Part): string = 
-  result = "in"
-  while not ( result == "R" or result == "A" ):
-    let wf = wft[result]
-    for rule in wf:
-      case rule.cmp:
-        of GT:
-          if part[rule.cmp_field] > rule.cmp_value:
-            result = rule.target
-            break
-        of LT:
-          if part[rule.cmp_field] < rule.cmp_value:
-            result = rule.target
-            break
-        of T: result = rule.target
-
-proc accepts(wft: WorkFlowTable, part: Part): bool = "A" == wft.process(part)
-
-func sum_vals(part: Part): int =
-  for val in part.values: result += val
 
 func prod_ranges(prange: PartRange): int =
   result = 1
@@ -150,10 +127,12 @@ hdj{m>838:A,pv}
 {x=2461,m=1339,a=466,s=291}
 {x=2127,m=1623,a=2188,s=1013}
 """.process_input
+discard test_parts
 
 assert test_wft.count_all_combos == 167409079868000
 
 let (input_wft, input_parts) = readFile("input19.txt").process_input
+discard input_parts
 
 let answer = input_wft.count_all_combos
 echo "The answer is ", answer
